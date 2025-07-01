@@ -45,7 +45,9 @@
 
 | Sentiment Analysis | Stock Prediction |
 |--------------------|------------------|
-| ![Sentiment](screenshots/sentiment.png) | ![Prediction](screenshots/prediction.png) |
+| ![Screenshot 2025-07-01 at 13 50 00](https://github.com/user-attachments/assets/d0ac326e-38f3-4615-808b-e6e875306c48)
+ | ![Screenshot 2025-07-01 at 13 51 05](https://github.com/user-attachments/assets/5bce823b-e34e-480d-b72f-7095712568c9)
+ |
 
 ---
 
