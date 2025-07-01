@@ -3,8 +3,8 @@
 **Your AI-powered platform to parse news, extract sentiment, and predict stock movements based on real-time headlines.**
 
 ---
+![Screenshot 2025-07-01 at 13 43 40](https://github.com/user-attachments/assets/d7a71059-4ffb-45d2-a1bf-bb0d97790554)
 
-![Banner](https://your-banner-link-if-any.com)
 
 ##  Project Overview
 
