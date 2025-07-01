@@ -185,7 +185,7 @@ st.markdown(
 )
 
 # Your app content starts here
-st.title("TechWorld")
+st.title("Newsage")
 
 url = st.text_input("Enter the URL of the website:")
 
