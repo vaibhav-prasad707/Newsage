@@ -1,11 +1,11 @@
 import streamlit as st
-from scrape import (
+from src.scrape import (
     scrape_website,
     extract_body_content,
     clean_body_content,
     split_dom_content
 )
-from parse import parse_with_ollama
+from src.parse import parse_with_ollama
 import pandas as pd
 from textblob import TextBlob
 import plotly.express as px
@@ -23,7 +23,7 @@ st.set_page_config(
 )
 
 # Load background animation FIRST
-with open("Background.json", "r") as f:
+with open("assets/Background.json", "r") as f:
     background_lottie = json.load(f)
 
 # Render background animation BEFORE any content
@@ -190,7 +190,7 @@ st.title("Newsage")
 url = st.text_input("Enter the URL of the website:")
 
 # Load second animation
-with open("jRkNnOVNsC.json", "r") as f:
+with open("assets/jRkNnOVNsC.json", "r") as f:
     lottie_data = json.load(f)
 
 st_lottie(lottie_data, speed=1, width=700, height=400, key="initial_animation")
