@@ -161,6 +161,7 @@ class NewsPipeline:
 
                 except Exception as e:
                     logger.error(f"Error processing article {url}: {e}")
+                    self.db.rollback() # CRITICAL: Clear the failed transaction
                     failures += 1
 
             run.status = "success" if failures == 0 else "partial_success"
