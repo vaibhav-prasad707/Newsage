@@ -43,9 +43,9 @@ class Article(Base):
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
     source = relationship("NewsSource", back_populates="articles")
-    sentiments = relationship("ArticleSentiment", back_populates="article")
-    topics = relationship("ArticleTopic", back_populates="article")
-    entities = relationship("ArticleEntity", back_populates="article")
+    sentiments = relationship("ArticleSentiment", back_populates="article", cascade="all, delete-orphan")
+    topics = relationship("ArticleTopic", back_populates="article", cascade="all, delete-orphan")
+    entities = relationship("ArticleEntity", back_populates="article", cascade="all, delete-orphan")
 
 class ArticleSentiment(Base):
     __tablename__ = "article_sentiments"

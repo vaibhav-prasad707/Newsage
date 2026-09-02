@@ -13,6 +13,7 @@ from app.ingestion.sources.config import SOURCE_REGISTRY, NewsSourceConfig
 from app.ingestion.scrapers.rss_scraper import RSSScraper
 from app.ingestion.scrapers.requests_scraper import RequestsScraper
 from app.ingestion.scrapers.playwright_scraper import PlaywrightScraper
+from app.ingestion.scrapers.cloudflare_scraper import CloudflareScraper
 from app.ingestion.parsers.html_parser import HTMLParser
 from app.ingestion.cleaners.content_cleaner import ContentCleaner
 
@@ -30,6 +31,19 @@ class NewsPipeline:
         self.rss_scraper = RSSScraper()
         self.req_scraper = RequestsScraper()
         self.plwp_scraper = PlaywrightScraper()
+
+    def _get_scraper(self, method: str):
+        """Factory to return the correct scraper based on method."""
+        if method == "rss":
+            return self.rss_scraper
+        elif method == "cloudflare":
+            # We can import and instantiate here or add to __init__
+            from app.ingestion.scrapers.cloudflare_scraper import CloudflareScraper
+            return CloudflareScraper()
+        elif method == "playwright":
+            return self.plwp_scraper
+        else:
+            return self.req_scraper
 
     def _validate_rss(self, rss_url: str) -> Tuple[bool, Optional[List[Any]]]:
         """
@@ -81,13 +95,10 @@ class NewsPipeline:
         if not url:
             return []
 
-        # Decide between Requests and Playwright
-        if config.method == "playwright":
-            logger.info(f"Using Playwright for {config.name}")
-            html = self.plwp_scraper.fetch(url)
-        else:
-            logger.info(f"Using Requests for {config.name}")
-            html = self.req_scraper.fetch(url)
+        # Use the scraper factory
+        scraper = self._get_scraper(config.method)
+        logger.info(f"Using {scraper.__class__.__name__} for {config.name}")
+        html = scraper.fetch(url)
 
         if not html:
             return []
@@ -129,12 +140,9 @@ class NewsPipeline:
                     title = cand['title']
 
                     # Fetch full article content
-                    # Use the same priority logic for the article page itself
-                    # (Most articles are static HTML, but some may need Playwright)
-                    if config.method == "playwright":
-                        full_html = self.plwp_scraper.fetch(url)
-                    else:
-                        full_html = self.req_scraper.fetch(url)
+                    # Use the scraper factory based on the source config
+                    scraper = self._get_scraper(config.method)
+                    full_html = scraper.fetch(url)
 
                     if not full_html:
                         failures += 1

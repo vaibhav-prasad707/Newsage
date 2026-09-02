@@ -19,7 +19,7 @@ SOURCE_REGISTRY = [
         name="Reuters",
         base_url="https://www.reuters.com",
         rss_url="https://www.reuters.com/arc.net/rss/topics/business",
-        method="rss",
+        method="playwright", # Changed from cloudflare to playwright as Reuters is very strict
         category="Global Finance"
     ),
     NewsSourceConfig(
@@ -40,7 +40,7 @@ SOURCE_REGISTRY = [
         name="Financial Times",
         base_url="https://www.ft.com",
         scrape_url="https://www.ft.com/world",
-        method="requests",
+        method="playwright", # Changed from requests to playwright
         category="Global Finance",
         country="United Kingdom"
     ),
@@ -48,14 +48,14 @@ SOURCE_REGISTRY = [
         name="Wall Street Journal",
         base_url="https://www.wsj.com",
         scrape_url="https://www.wsj.com/news/markets",
-        method="requests",
+        method="playwright", # Changed from requests to playwright
         category="Global Finance"
     ),
     NewsSourceConfig(
         name="Investing.com",
         base_url="https://www.investing.com",
         scrape_url="https://www.investing.com/news",
-        method="requests",
+        method="playwright", # Changed from requests to playwright
         category="Global Markets"
     ),
     NewsSourceConfig(
@@ -69,7 +69,7 @@ SOURCE_REGISTRY = [
         name="Barron's",
         base_url="https://www.barrons.com",
         scrape_url="https://www.barrons.com/market-news",
-        method="requests",
+        method="playwright", # Changed from requests to playwright
         category="Investment Research"
     ),
     NewsSourceConfig(
@@ -82,7 +82,7 @@ SOURCE_REGISTRY = [
     NewsSourceConfig(
         name="Fortune",
         base_url="https://fortune.com",
-        scrape_url="https://fortune.com/news",
+        scrape_url="https://fortune.com/latest", # Corrected URL from /news to /latest
         method="requests",
         category="Business Finance"
     ),
