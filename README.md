@@ -1,70 +1,117 @@
-# Newsage
+# 🌐 Newsage V2: AI-Powered Financial News Intelligence Platform
 
-**Your AI-powered platform to parse news, extract sentiment, and predict stock movements based on real-time headlines.**
-
----
-![Screenshot 2025-07-01 at 13 43 40](https://github.com/user-attachments/assets/d7a71059-4ffb-45d2-a1bf-bb0d97790554)
-
-
-##  Project Overview
-
-**Newsage** leverages **AI models (Ollama)** and **web scraping techniques (Selenium)** to extract real-time headlines from any news website, analyze sentiment, and perform short-term stock prediction. Designed with an elegant **Streamlit interface**, it empowers users to track market moods and make informed decisions using cutting-edge AI tools.
+Newsage is a sophisticated data engineering and machine learning platform designed to transform raw financial news into structured, actionable intelligence. It automates the entire pipeline from discovery and ingestion to deep NLP analysis and market data correlation.
 
 ---
 
-##  Features
+## 🚀 Product Vision
+Newsage aims to bridge the gap between unstructured news and quantitative market data. By combining high-throughput scraping with state-of-the-art LLMs and financial-domain transformers, the platform identifies market-moving signals, extracts company-specific entities, and analyzes sentiment trends to provide a comprehensive view of the financial landscape.
 
-###  Web Scraping & Content Parsing
-- Scrape any public news site using **headless Selenium**
-- Clean and extract meaningful content from the HTML body
-- Dynamically chunk long content for efficient parsing
+## ✨ Key Features
 
-###  AI-Powered Parsing (via Ollama)
-- Parse scraped content using **Ollama** (LLaMA3 or compatible model)
-- Extract key information like **headlines**, **timestamps**, and **stock symbols**
-- Prompt-based: describe what you want to extract!
+### 🛠️ Automated Data Ingestion
+- **Hybrid Scraping Engine**: A priority-based system that switches between **RSS feeds**, **Static HTML (Requests)**, and **Dynamic JS-Rendering (Playwright)** to maximize reliability.
+- **Source Registry**: A configurable system supporting global and Indian financial news giants (Reuters, Bloomberg, CNBC, Moneycontrol, etc.).
+- **Idempotent Pipeline**: Built-in deduplication using SHA-256 content hashing to ensure no duplicate articles enter the system.
 
-###  Sentiment Analysis
-- Analyze extracted headlines using **TextBlob**
-- Generate sentiment labels: Positive, Negative, Neutral
-- Visualize distribution using **Plotly Pie Charts**
-- Test your own headlines for sentiment on the fly
+### 🧠 AI/NLP Intelligence Pipeline
+- **Financial Sentiment**: Powered by **FinBERT**, a transformer model specifically trained on financial corpora for high-accuracy sentiment labeling.
+- **Structured Extraction**: Uses **Llama 3.2** (via Ollama) to extract stock tickers, company names, and market topics into structured JSON.
+- **Semantic Embeddings**: Generates 384-dimensional vectors using `all-MiniLM-L6-v2` for advanced semantic search and clustering.
+- **Automated Summarization**: Generates concise, impact-focused summaries of long-form financial articles.
 
-###  Stock Symbol Detection & Price Prediction
-- Extract stock ticker symbols directly from news headlines (via AI)
-- Choose between:
-  -  **Polynomial Regression** for quick trend fitting
-  -  **LSTM (Deep Learning)** for sequential forecasting (optional)
-- Predict user-specified number of days ahead
-- Visualize predicted stock prices using **Streamlit charts**
-
+### 💾 Production-Grade Infrastructure
+- **Vector Database**: Powered by **PostgreSQL + pgvector** (hosted on Supabase) for persistent storage and semantic query capabilities.
+- **Batch Processing**: Optimized pipeline that handles thousands of articles using parallel AI inference and batch embedding generation.
 
 ---
 
-## Screenshots
+## 🏗️ Architecture
 
-| Sentiment Analysis | Stock Prediction |
-|--------------------|------------------|
-| ![Screenshot 2025-07-01 at 13 50 00](https://github.com/user-attachments/assets/d0ac326e-38f3-4615-808b-e6e875306c48) | ![Screenshot 2025-07-01 at 13 51 05](https://github.com/user-attachments/assets/5bce823b-e34e-480d-b72f-7095712568c9) |
+```text
+[ News Sources ] 
+       │
+       ▼
+[ Ingestion Pipeline ] ──► [ Deduplication ] ──► [ PostgreSQL + pgvector ]
+       │                                              ▲
+       │                                              │
+       ▼                                              │
+[ AI Processing Suite ] ──────────────────────────────┘
+       │
+       ├─► FinBERT (Sentiment)
+       ├─► Llama 3.2 (Entities & Summary)
+       └─► Sentence-Transformers (Embeddings)
+```
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+| :--- | :--- |
+| **Frontend** | Streamlit, Plotly, Pandas |
+| **Backend** | Python 3.11+, SQLAlchemy |
+| **Database** | PostgreSQL, pgvector (Supabase) |
+| **AI/NLP** | PyTorch, Transformers, Ollama, FinBERT |
+| **Scraping** | Playwright, BeautifulSoup, Feedparser, Cloudscraper |
+| **Market Data** | yfinance |
 
 ---
 
-##  Tech Stack
+## 🚦 Getting Started
 
-| Tool | Purpose |
-|------|---------|
-| `Streamlit` | UI Framework |
-| `Selenium` | Web scraping engine |
-| `BeautifulSoup` | HTML parsing |
-| `Ollama` | AI parsing and extraction |
-| `TextBlob` | Sentiment analysis |
-| `yfinance` | Real-time stock data |
-| `scikit-learn` | Regression models |
-| `TensorFlow` *(Optional)* | LSTM forecasting |
-| `Plotly` | Visualizations |
-| `LangChain` | Prompt-based AI orchestration |
+### 1. Prerequisites
+- **Python 3.11+**
+- **Ollama** (Installed and running locally)
+- **Supabase Account** (For PostgreSQL + pgvector)
+
+### 2. Installation
+```bash
+# Create virtual environment
+python -m venv .venv
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+playwright install chromium
+```
+
+### 3. Configuration
+Create a `.env` file in the root directory:
+```env
+DATABASE_URL=postgresql://postgres:[PASSWORD]@db.[PROJECT-ID].supabase.co:5432/postgres
+OLLAMA_MODEL=llama3.2:1b
+ENVIRONMENT=development
+```
+
+### 4. Database Initialization
+Enable the `vector` extension in your Supabase dashboard, then run:
+```bash
+python scripts/init_db.py
+```
+
+### 5. Running the Pipeline
+```bash
+# 1. Scrape new articles
+python -m app.ingestion.pipeline
+
+# 2. Process articles with AI (Sentiment, Entities, Summary)
+python scripts/process_articles.py
+```
 
 ---
 
-##  Folder Structure
+## 🗺️ Project Roadmap
 
+- [x] **Phase 1-2**: System Architecture & Database Design.
+- [x] **Phase 3**: Hybrid News Ingestion Pipeline.
+- [x] **Phase 4**: AI/NLP Enrichment Suite.
+- [ ] **Phase 5**: Market Data Integration (yfinance).
+- [ ] **Phase 6**: News Impact Scoring & Analytics.
+- [ ] **Phase 7**: ML Forecasting & Backtesting.
+- [ ] **Phase 8**: Interactive Analytics Dashboard.
+- [ ] **Phase 9**: Semantic Search & AI Assistant.
+- [ ] **Phase 10**: Deployment & CI/CD.
+
+---
+
+## ⚠️ Disclaimer
+*Newsage is a research and portfolio project. Any stock predictions or sentiment signals generated by the platform are for educational purposes only and **do not constitute financial advice**.*
